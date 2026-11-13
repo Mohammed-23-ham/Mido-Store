@@ -56,6 +56,7 @@ const AccordionMotionServices = () => {
     <div className="flex items-center justify-center px-4 py-8 w-full">
       <div className="w-full max-w-lg">
         <Accordion
+          type="multiple"
           value={openItems}
           onValueChange={setOpenItems}
           className="w-full"

@@ -12,6 +12,7 @@ Every bottle is vegan, cruelty-free and shipped carbon-neutral.</p>
       </div>
       <Image
       src={storyImg}
+      alt='A drop of olive-derived oil falling onto an olive leaf'
       className='aspect-square w-full rounded-[2rem] object-cover'
       >
 
