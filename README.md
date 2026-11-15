@@ -35,3 +35,15 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 "# Mido-Store" 
+
+## Contact form
+
+The contact form sends messages through EmailJS. Add these values to `.env.local`:
+
+```env
+NEXT_PUBLIC_EMAILJS_SERVICE_ID=
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=
+NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=
+```
+
+Configure the EmailJS template to use the `from_name`, `reply_to`, and `message` fields.
