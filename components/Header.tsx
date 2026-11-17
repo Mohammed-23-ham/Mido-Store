@@ -24,7 +24,7 @@ export default function Header() {
       <AnnouncementMarquee />
       <header className="sticky top-0 z-50">
         <div className="border-b bg-background/90 backdrop-blur flex items-center justify-between py-4 px-3 sm:px-6 font-display text-primary-accent">
-          <div className="col hover:text-primary text-xl sm:text-2xl">Mido-Store</div>
+          <Link href='/' className="col hover:text-primary text-xl sm:text-2xl">Mido-Store</Link>
           <nav className="hidden flex-row gap-5 text-normal font-light md:flex">
             {navLinks.map(({ href, label }) => (
               <Link className="hover:text-primary" href={href} key={label}>
