@@ -1,6 +1,7 @@
 import AnnouncementMarquee from "@/components/shadcn-space/marquee/marquee-05";
 import Link from 'next/link';
-import { Menu, ShoppingBag } from "lucide-react";
+import { Menu } from "lucide-react";
+import CartDrawer from "@/components/CartDrawer";
 import ThemeToggle from "@/components/ThemeToggle";
 import {
   DropdownMenu,
@@ -35,20 +36,20 @@ export default function Header() {
             <select
               aria-label="Currency"
               defaultValue="USD"
-              className="h-9 rounded-full border border-border bg-transparent px-2 text-xs text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring sm:px-3 sm:text-sm"
+              className="h-9 scheme-light rounded-full border border-border bg-transparent px-2 text-xs text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring dark:scheme-dark sm:px-3 sm:text-sm"
             >
-              <option value="USD">USD</option>
-              <option value="EUR">EUR</option>
-              <option value="SAR">SAR</option>
+              <option className="bg-card text-card-foreground" value="USD">
+                USD
+              </option>
+              <option className="bg-card text-card-foreground" value="EUR">
+                EUR
+              </option>
+              <option className="bg-card text-card-foreground" value="SAR">
+                SAR
+              </option>
             </select>
             <ThemeToggle />
-            <button
-              type="button"
-              aria-label="Shopping bag"
-              className="inline-flex size-9 items-center justify-center rounded-full text-foreground transition-colors hover:bg-muted"
-            >
-              <ShoppingBag aria-hidden="true" size={22} strokeWidth={1.8} />
-            </button>
+            <CartDrawer />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button

@@ -3,7 +3,8 @@ import { Fraunces, Manrope } from "next/font/google";
 import "@/app/globals.css";
 import { cn } from "@/lib/utils";
 import { Header } from "@/app/index";
-
+import Footer from "@/components/Footer";
+import CartHydrator from "@/components/CartHydrator";
 
 
 const fraunces = Fraunces({
@@ -30,9 +31,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={cn("h-full", "antialiased", fraunces.variable, manrope.variable, "font-sans")}
     >
       <body className="min-h-full flex flex-col">
+        <CartHydrator />
         <Header />
-        {children}
-        </body>
+        <main className="flex-1">{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }
