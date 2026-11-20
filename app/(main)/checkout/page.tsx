@@ -2,14 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { Leaf, LockKeyhole, ShieldCheck } from "lucide-react";
 import { useCartStore } from "@/lib/cart-store";
 import { useCurrency } from "@/components/providers/currency-provider";
+import { DemoPurchaseDialog } from "@/components/demo-purchase-dialog";
 
 const FREE_SHIPPING_THRESHOLD = 75;
-const inputClassName =
-  "h-11 w-full rounded-full border border-border bg-background px-4 text-sm outline-none transition-shadow placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring";
 
 const expressMethods = [
   { name: "Shop Pay", className: "bg-primary text-primary-foreground" },
@@ -25,14 +24,7 @@ export default function CheckoutPage() {
     0,
   );
   const qualifiesForFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
-  const [notice, setNotice] = useState("");
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setNotice(
-      "Payment processing isn't configured yet. Your order has not been placed.",
-    );
-  }
+  const [demoMethod, setDemoMethod] = useState<string | null>(null);
 
   if (items.length === 0) {
     return (
@@ -52,7 +44,7 @@ export default function CheckoutPage() {
 
   return (
     <section className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[minmax(0,1.7fr)_minmax(300px,1fr)] lg:gap-10 lg:px-10 lg:py-10">
-      <form className="space-y-7" onSubmit={handleSubmit}>
+      <div className="space-y-7">
         <section>
           <p className="mb-3 text-center text-xs text-muted-foreground">
             Express checkout
@@ -62,11 +54,7 @@ export default function CheckoutPage() {
               <button
                 className={`h-11 rounded-full text-sm font-medium transition-opacity hover:opacity-85 ${className}`}
                 key={name}
-                onClick={() =>
-                  setNotice(
-                    `${name} payments aren't configured yet. Your order has not been placed.`,
-                  )
-                }
+                onClick={() => setDemoMethod(name)}
                 type="button"
               >
                 {name}
@@ -75,157 +63,30 @@ export default function CheckoutPage() {
           </div>
         </section>
 
-        <section className="space-y-3">
+        <section className="space-y-3 rounded-3xl border bg-card p-5">
           <h1 className="font-[family-name:var(--font-fraunces)] text-xl">
-            1. Contact
+            Demo checkout
           </h1>
-          <label className="sr-only" htmlFor="checkout-email">
-            Email
-          </label>
-          <input
-            autoComplete="email"
-            className={inputClassName}
-            id="checkout-email"
-            name="email"
-            placeholder="Email"
-            required
-            type="email"
-          />
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="font-[family-name:var(--font-fraunces)] text-xl">
-            2. Shipping
-          </h2>
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            <label className="sr-only" htmlFor="checkout-first-name">
-              First name
-            </label>
-            <input
-              autoComplete="given-name"
-              className={inputClassName}
-              id="checkout-first-name"
-              name="firstName"
-              placeholder="First name"
-              required
-            />
-            <label className="sr-only" htmlFor="checkout-last-name">
-              Last name
-            </label>
-            <input
-              autoComplete="family-name"
-              className={inputClassName}
-              id="checkout-last-name"
-              name="lastName"
-              placeholder="Last name"
-              required
-            />
-          </div>
-          <label className="sr-only" htmlFor="checkout-address">
-            Address
-          </label>
-          <input
-            autoComplete="street-address"
-            className={inputClassName}
-            id="checkout-address"
-            name="address"
-            placeholder="Address"
-            required
-          />
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-            <label className="sr-only" htmlFor="checkout-city">
-              City
-            </label>
-            <input
-              autoComplete="address-level2"
-              className={inputClassName}
-              id="checkout-city"
-              name="city"
-              placeholder="City"
-              required
-            />
-            <label className="sr-only" htmlFor="checkout-country">
-              Country
-            </label>
-            <input
-              autoComplete="country-name"
-              className={inputClassName}
-              id="checkout-country"
-              name="country"
-              placeholder="Country"
-              required
-            />
-            <label className="sr-only" htmlFor="checkout-postal-code">
-              Postal code
-            </label>
-            <input
-              autoComplete="postal-code"
-              className={inputClassName}
-              id="checkout-postal-code"
-              name="postalCode"
-              placeholder="Postal code"
-              required
-            />
-          </div>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="font-[family-name:var(--font-fraunces)] text-xl">
-            3. Payment
-          </h2>
-          <label className="sr-only" htmlFor="checkout-card-number">
-            Card number
-          </label>
-          <input
-            autoComplete="cc-number"
-            className={inputClassName}
-            id="checkout-card-number"
-            inputMode="numeric"
-            name="cardNumber"
-            placeholder="Card number"
-            required
-          />
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            <label className="sr-only" htmlFor="checkout-card-expiry">
-              Expiration date
-            </label>
-            <input
-              autoComplete="cc-exp"
-              className={inputClassName}
-              id="checkout-card-expiry"
-              name="cardExpiry"
-              placeholder="MM / YY"
-              required
-            />
-            <label className="sr-only" htmlFor="checkout-card-cvc">
-              Security code
-            </label>
-            <input
-              autoComplete="cc-csc"
-              className={inputClassName}
-              id="checkout-card-cvc"
-              inputMode="numeric"
-              name="cardCvc"
-              placeholder="CVC"
-              required
-            />
-          </div>
-        </section>
-
-        {notice && (
-          <p className="text-sm text-muted-foreground" role="status">
-            {notice}
+          <p className="text-sm leading-6 text-muted-foreground">
+            Products are fictional. This demo does not collect contact, shipping,
+            or card details, and it cannot place a real order.
           </p>
-        )}
-
-        <button
-          className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-primary text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/85"
-          type="submit"
-        >
-          <LockKeyhole aria-hidden="true" size={15} />
-          Pay {format(subtotal)}
-        </button>
-      </form>
+          <button
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-primary text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/85"
+            onClick={() => setDemoMethod("Checkout")}
+            type="button"
+          >
+            <LockKeyhole aria-hidden="true" size={15} />
+            Complete demo checkout · {format(subtotal)}
+          </button>
+        </section>
+      </div>
+      <DemoPurchaseDialog
+        method={demoMethod}
+        onOpenChange={(open) => {
+          if (!open) setDemoMethod(null);
+        }}
+      />
 
       <aside className="h-fit rounded-3xl bg-secondary p-5 lg:sticky lg:top-24">
         <ul className="space-y-3">

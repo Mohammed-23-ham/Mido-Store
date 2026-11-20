@@ -6,6 +6,7 @@ import { RotateCcw, ShieldCheck, Truck } from "lucide-react";
 import { useState } from "react";
 import { useCartStore } from "@/lib/cart-store";
 import { Price } from "@/components/price";
+import { DemoPurchaseDialog } from "@/components/demo-purchase-dialog";
 import productImg from "@/public/imgs/elixir.jpg";
 import dropImg from "@/public/imgs/drop.jpg";
 import applyImg from "@/public/imgs/apply.jpg";
@@ -27,6 +28,7 @@ const purchaseOptions = [
 export default function Shop() {
   const [selectedOption, setSelectedOption] = useState("one");
   const [selectedImage, setSelectedImage] = useState(0);
+  const [demoMethod, setDemoMethod] = useState<string | null>(null);
   const addItem = useCartStore((state) => state.addItem);
 
   const thumbnails = [
@@ -135,6 +137,7 @@ export default function Shop() {
           </button>
           <button
             type="button"
+            onClick={() => setDemoMethod("PayPal")}
             className="mt-3 h-12 w-full rounded-full bg-[oklch(0.84_0.16_85)] text-sm font-semibold text-[oklch(0.25_0.05_260)]"
           >
             Buy Now with PayPal
@@ -192,6 +195,12 @@ export default function Shop() {
           </Link>
         </div>
       </section>
+      <DemoPurchaseDialog
+        method={demoMethod}
+        onOpenChange={(open) => {
+          if (!open) setDemoMethod(null);
+        }}
+      />
     </div>
   );
 }
