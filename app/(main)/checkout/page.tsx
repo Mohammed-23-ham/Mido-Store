@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { Leaf, LockKeyhole, ShieldCheck } from "lucide-react";
 import { useCartStore } from "@/lib/cart-store";
+import { useCurrency } from "@/components/providers/currency-provider";
 
 const FREE_SHIPPING_THRESHOLD = 75;
 const inputClassName =
@@ -16,12 +17,9 @@ const expressMethods = [
   { name: "Crypto USDT", className: "bg-[#111612] text-white" },
 ] as const;
 
-function formatPrice(price: number) {
-  return `$${price.toFixed(2)}`;
-}
-
 export default function CheckoutPage() {
   const items = useCartStore((state) => state.items);
+  const { currency, format } = useCurrency();
   const subtotal = items.reduce(
     (total, item) => total + item.price * item.quantity,
     0,
@@ -225,7 +223,7 @@ export default function CheckoutPage() {
           type="submit"
         >
           <LockKeyhole aria-hidden="true" size={15} />
-          Pay {formatPrice(subtotal)}
+          Pay {format(subtotal)}
         </button>
       </form>
 
@@ -247,7 +245,7 @@ export default function CheckoutPage() {
               </div>
               <p className="min-w-0 flex-1 text-xs leading-4">{item.name}</p>
               <span className="shrink-0 text-xs">
-                {formatPrice(item.price * item.quantity)}
+                {format(item.price * item.quantity)}
               </span>
             </li>
           ))}
@@ -256,7 +254,7 @@ export default function CheckoutPage() {
         <div className="my-4 space-y-2 border-t border-border pt-3 text-xs">
           <div className="flex justify-between">
             <span>Subtotal</span>
-            <span>{formatPrice(subtotal)}</span>
+            <span>{format(subtotal)}</span>
           </div>
           <div className="flex justify-between">
             <span>Shipping</span>
@@ -268,10 +266,13 @@ export default function CheckoutPage() {
             <span>Total</span>
             <span>
               {qualifiesForFreeShipping
-                ? formatPrice(subtotal)
+                ? format(subtotal)
                 : "Calculated at next step"}
             </span>
           </div>
+          <p className="pt-2 text-[10px] leading-4 text-muted-foreground">
+            Prices converted at today&apos;s rate; charged in {currency}.
+          </p>
         </div>
 
         <div className="grid grid-cols-3 gap-2 text-center text-[10px] text-muted-foreground">

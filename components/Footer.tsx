@@ -14,8 +14,8 @@ const helpLinks = [
 export default function Footer() {
   return (
     <footer className="mt-auto border-t bg-secondary text-secondary-foreground">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-5 py-10 sm:grid-cols-3 sm:gap-6 sm:px-8 lg:px-10">
-        <div>
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 py-12 sm:grid-cols-3 sm:gap-8 sm:px-8 lg:px-10">
+        <div className="sm:pr-8">
           <Link
             href="/"
             className="font-[family-name:var(--font-fraunces)] text-2xl transition-colors hover:text-primary"
@@ -62,9 +62,10 @@ export default function Footer() {
             ))}
           </ul>
         </nav>
+
       </div>
 
-      <div className="border-t px-5 py-5 text-center text-xs text-muted-foreground">
+      <div className="border-t px-5 py-4 text-center text-xs text-muted-foreground">
         © {new Date().getFullYear()} Aura Botanica. All rights reserved.
       </div>
     </footer>

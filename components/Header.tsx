@@ -1,8 +1,19 @@
+"use client";
+
 import AnnouncementMarquee from "@/components/shadcn-space/marquee/marquee-05";
 import Link from 'next/link';
 import { Menu } from "lucide-react";
 import CartDrawer from "@/components/CartDrawer";
 import ThemeToggle from "@/components/ThemeToggle";
+import { useCurrency } from "@/components/providers/currency-provider";
+import { CURRENCIES, isCurrencyCode, type CurrencyCode } from "@/lib/currency/config";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,13 +29,17 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ] as const;
 
+const currencyCodes = Object.keys(CURRENCIES) as CurrencyCode[];
+
 export default function Header() {
+  const { currency, setCurrency } = useCurrency();
+
   return (
     <>
       <AnnouncementMarquee />
       <header className="sticky top-0 z-50">
         <div className="border-b bg-background/90 backdrop-blur flex items-center justify-between py-4 px-3 sm:px-6 font-display text-primary-accent">
-          <Link href='/' className="col hover:text-primary text-xl sm:text-2xl">Mido-Store</Link>
+          <Link href='/' className="col font-[family-name:var(--font-fraunces)] hover:text-primary text-xl sm:text-2xl">Aura Botanica</Link>
           <nav className="hidden flex-row gap-5 text-normal font-light md:flex">
             {navLinks.map(({ href, label }) => (
               <Link className="hover:text-primary" href={href} key={label}>
@@ -33,21 +48,23 @@ export default function Header() {
             ))}
           </nav>
           <div className="col hover:text-primary buttons flex items-center gap-1 sm:gap-2 md:gap-4">
-            <select
-              aria-label="Currency"
-              defaultValue="USD"
-              className="h-9 scheme-light rounded-full border border-border bg-transparent px-2 text-xs text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring dark:scheme-dark sm:px-3 sm:text-sm"
+            <Select
+              value={currency}
+              onValueChange={(value) => {
+                if (isCurrencyCode(value)) setCurrency(value);
+              }}
             >
-              <option className="bg-card text-card-foreground" value="USD">
-                USD
-              </option>
-              <option className="bg-card text-card-foreground" value="EUR">
-                EUR
-              </option>
-              <option className="bg-card text-card-foreground" value="SAR">
-                SAR
-              </option>
-            </select>
+              <SelectTrigger aria-label="Currency" className="w-[92px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent align="end">
+                {currencyCodes.map((code) => (
+                  <SelectItem key={code} value={code}>
+                    {code} {CURRENCIES[code].symbol}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <ThemeToggle />
             <CartDrawer />
             <DropdownMenu>

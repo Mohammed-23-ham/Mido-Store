@@ -12,6 +12,7 @@ import { useCartStore } from "@/lib/cart-store";
 import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useCurrency } from "@/components/providers/currency-provider";
 
 const FREE_SHIPPING_THRESHOLD = 75;
 const GUA_SHA_ITEM = {
@@ -26,6 +27,7 @@ export default function CartDrawer() {
   const addItem = useCartStore((state) => state.addItem);
   const setQuantity = useCartStore((state) => state.setQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
+  const { format } = useCurrency();
   const cartCount = items.reduce((total, item) => total + item.quantity, 0);
   const subtotal = items.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -83,7 +85,7 @@ export default function CartDrawer() {
         <div className="shrink-0 border-b px-5 py-5">
           <p className="mb-2 text-sm">
             {remainingForFreeShipping > 0
-              ? `You're $${remainingForFreeShipping.toFixed(2)} away from free shipping`
+              ? `You're ${format(remainingForFreeShipping)} away from free shipping`
               : "🎉 You unlocked free shipping!"}
           </p>
           <div
@@ -120,7 +122,7 @@ export default function CartDrawer() {
                   <div className="min-w-0 flex-1">
                     <p className="text-sm leading-5">{item.name}</p>
                     <p className="mt-0.5 text-sm text-muted-foreground">
-                      ${item.price.toFixed(2)}
+                      {format(item.price)}
                     </p>
                     <div className="mt-2 flex items-center gap-2">
                       <button
@@ -191,11 +193,11 @@ export default function CartDrawer() {
           <div className="shrink-0 border-t px-5 py-4">
             <div className="mb-1 flex justify-between text-sm">
               <span>Subtotal</span>
-              <span>${subtotal.toFixed(2)}</span>
+              <span>{format(subtotal)}</span>
             </div>
             <div className="mb-3 flex justify-between text-base font-semibold">
               <span>Total</span>
-              <span>${subtotal.toFixed(2)}</span>
+              <span>{format(subtotal)}</span>
             </div>
             <SheetClose asChild>
               <Link

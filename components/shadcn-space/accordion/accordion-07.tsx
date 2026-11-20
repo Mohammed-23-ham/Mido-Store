@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Plus } from "lucide-react";
+import { useCurrency } from "@/components/providers/currency-provider";
 import {
   Accordion,
   AccordionContent,
@@ -44,11 +45,12 @@ const items: AccordionItem[] = [
     number: "04",
     title: "Do you ship internationally?",
     content:
-      "We ship worldwide, with free shipping on orders over $75.",
+      "We ship worldwide, with free shipping on orders over {threshold}.",
   },
 ];
 
 const AccordionMotionServices = () => {
+  const { format } = useCurrency();
   const [openItems, setOpenItems] = useState<string[]>(["discovery"]);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
@@ -105,7 +107,7 @@ const AccordionMotionServices = () => {
                 </AccordionTrigger>
 
                 <AccordionContent className="pl-16 pr-4 pb-6 text-sm text-muted-foreground leading-relaxed">
-                  {item.content}
+                  {item.content.replace("{threshold}", format(75))}
                 </AccordionContent>
 
                 {/* Static border */}

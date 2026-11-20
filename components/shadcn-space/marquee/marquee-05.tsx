@@ -1,9 +1,12 @@
-import { Marquee } from "@/components/shadcn-space/animations/marquee";
+"use client";
 
-const announcement =
-  "Free shipping over 50$ · Use code Mido for 20% off · 30-day money-back guarantee";
+import { Marquee } from "@/components/shadcn-space/animations/marquee";
+import { useCurrency } from "@/components/providers/currency-provider";
 
 export default function AnnouncementMarquee() {
+  const { format } = useCurrency();
+  const announcement = `Free shipping on orders over ${format(75)} · Use code Mido for 20% off · 30-day money-back guarantee`;
+
   return (
     <section
       aria-label="Store announcements"
